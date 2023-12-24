@@ -1,20 +1,50 @@
 import { galleryItems } from "./gallery-items.js";
-
 // Change code below this line
-const gallery = document.querySelector(".gallery");
 
-const markup = galleryItems
-  .map((galleryItem) => `
-  <li class="gallery__item">
-    <a class="gallery__link" href="large-image.jpg">
+const galleryItemsMarkup = galleryItems
+  .map((item) => {
+    return `
+    <div class="gallery__item">
+    <a class="gallery__link" href="${item.original}">
       <img
         class="gallery__image"
-        src="${galleryItem.preview}"
-        data-source="${galleryItem.original}"
-        alt="${galleryItem.description}"
+        src="${item.preview}"
+        data-source="${item.original}"
+        alt="${item.description}"
       />
     </a>
-  </li>`)
+  </div>`;
+  })
   .join("");
 
-gallery.insertAdjacentHTML('beforeend', markup);
+const galleryElem = document.querySelector("ul.gallery");
+
+galleryElem.innerHTML = galleryItemsMarkup;
+galleryElem.addEventListener("click", selectItem);
+
+function selectItem(event) {
+  event.preventDefault();
+
+  if (!event.target.classList.contains("gallery__image")) {
+    return;
+  }
+
+  const instance = basicLightbox.create(
+    `<img src="${event.target.dataset.source}">`,
+    {
+      onShow: (instance) => {
+        document.addEventListener("keydown", onEscKeyPress);
+      },
+      onClose: (instance) => {
+        document.removeEventListener("keydown", onEscKeyPress);
+      },
+    }
+  );
+  instance.show();
+
+  function onEscKeyPress(event) {
+    if (event.code === "Escape") {
+      instance.close();
+    }
+  }
+}
