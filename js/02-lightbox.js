@@ -23,6 +23,7 @@ galleryElem.addEventListener('click', event => {
     return;
   }
 });
+
 new SimpleLightbox('.gallery a', {
   captions: true,
   captionType: 'attr',
