@@ -11,8 +11,8 @@ const galleryMarkup = galleryItems
          class="gallery__image"
          src="${preview}"
          alt="${description}"
-    />
-  </a>`
+        />
+      </a>`
   )
   .join('');
 
